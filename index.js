@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+// now in github
+
 // set up handlebars view engine
 var handlebars = require('express-handlebars')
 .create({ defaultLayout:'main' });
