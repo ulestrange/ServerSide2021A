@@ -46,7 +46,8 @@ app.get('/contact',  (req, res) => {
 
 var foil = { "name": "foil",
          "dob": "01/01/1998",
-        "imageurl": "/images/foilimage1.png"}
+        "imageurl": "/images/foilimage1.png",
+        "hobbies": ["Jokes", "Gags", "Stand up"]}
 
 var arms = { "name": "arms",
         "dob": "03/05/1995",
