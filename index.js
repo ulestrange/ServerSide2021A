@@ -44,26 +44,28 @@ app.get('/contact',  (req, res) => {
 // a file - this is just to show how templates work and how we can pass them 
 // data
 
-var foil = { "name": "foil",
+var data = {"foil" : { "name": "foil",
          "dob": "01/01/1998",
         "imageurl": "/images/foilimage1.png",
-        "hobbies": ["Jokes", "Gags", "Stand up"]}
-
-var arms = { "name": "arms",
+        "hobbies": ["Jokes", "Gags", "Stand up"]},
+        "arms" :  { "name": "arms",
         "dob": "03/05/1995",
-       "imageurl": "/images/armsimage1.png"}
-
-var hog = { "name": "hog",
-        "imageurl": "/images/hogimage1.png"}
+       "imageurl": "/images/armsimage1.png"},
+        "hog" : { "name": "hog",
+        "imageurl": "/images/hogimage1.png"} }
 
 app.get('/foil', (req,res) =>
-       res.render('person', {person: foil} ))
+       res.render('person', {person: data.foil} ))
 
 app.get('/arms', (req,res) =>
-       res.render('person', {person: arms} ))
+       res.render('person', {person: data.arms} ))
 
 app.get('/hog', (req,res) =>
-       res.render('person', {person: hog} ))
+       res.render('person', {person: data.hog} ))
+
+app.get('/personlist', (req,res) =>
+    res.render('personlist', { personlist: data }))
+
 
 // custom 404 page
 app.use( (req, res) => {
