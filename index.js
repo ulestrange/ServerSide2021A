@@ -54,17 +54,26 @@ var data = {"foil" : { "name": "foil",
         "hog" : { "name": "hog",
         "imageurl": "/images/hogimage1.png"} }
 
-app.get('/foil', (req,res) =>
-       res.render('person', {person: data.foil} ))
+// app.get('/foil', (req,res) =>
+//        res.render('person', {person: data.foil} ))
 
-app.get('/arms', (req,res) =>
-       res.render('person', {person: data.arms} ))
+// app.get('/arms', (req,res) =>
+//        res.render('person', {person: data.arms} ))
 
-app.get('/hog', (req,res) =>
-       res.render('person', {person: data.hog} ))
+// app.get('/hog', (req,res) =>
+//        res.render('person', {person: data.hog} ))
 
 app.get('/personlist', (req,res) =>
     res.render('personlist', { personlist: data }))
+
+app.get('/personlist/:name', (req, res) => {
+
+var name = req.params.name;
+
+res.render('person', {person: data[name]})
+})
+
+
 
 
 // custom 404 page
