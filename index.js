@@ -4,6 +4,8 @@ const port = 3000
 
 // now in github
 
+
+
 // set up handlebars view engine
 var handlebars = require('express-handlebars')
     .create({ defaultLayout: 'main' });
@@ -18,6 +20,8 @@ app.use(express.static('public'));
 // import the data we need
 
 const testData = require('./lib/data.js');
+
+console.table(testData.getPeopleData());
 
 
 
