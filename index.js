@@ -15,6 +15,10 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
 
+// import the data we need
+
+const testData = require('./lib/data.js');
+
 
 
 // Note the first route that gets matched is the one which will handle the request.
@@ -44,36 +48,7 @@ app.get('/contact', (req, res) => {
 // a file - this is just to show how templates work and how we can pass them 
 // data
 
-var data = {
-    "foil": {
-        "name": "foil",
-        "dob": "01/01/3030",
-        "imageurl": "/images/foilimage1.png",
-        "hobbies": ["Jokes", "Gags", "Stand up"]
-    },
-    "arms": {
-        "name": "arms",
-        "dob": "03/05/1995",
-        "imageurl": "/images/armsimage1.png"
-    },
-    "hog": {
-        "name": "hog",
-        "imageurl": "/images/hogimage1.png"
-    },
 
-    "hog2": {
-        "name": "hog",
-        "imageurl": "/images/hogimage1.png"
-    },
-    "hog3": {
-        "name": "hog",
-        "imageurl": "/images/hogimage1.png"
-    },
-    "hog4": {
-        "name": "hog",
-        "imageurl": "/images/hogimage1.png"
-    }
-}
 
 // app.get('/foil', (req,res) =>
 //        res.render('person', {person: data.foil} ))
@@ -85,11 +60,12 @@ var data = {
 //        res.render('person', {person: data.hog} ))
 
 app.get('/personlist', (req, res) =>
-        res.render('personlist', { personlist: data }))
+        res.render('personlist', { personlist: testData.getPeopleData() }))
 
 app.get('/personlist/:name', (req, res) => {
 
             var name = req.params.name;
+            var data = testData.getPeopleData();
 
             if (data[name] == null) {
                 res.render('404'); // could also have a special page for person not found
@@ -106,9 +82,8 @@ app.get('/personlist/:name', (req, res) => {
 
 // custom 404 page
 app.use((req, res) => {
-            res.type('text/plain');
-            res.status(404);
-            res.send('404 - Not Found');
+            
+            res.render('404');
         });
 
     // custom 500 page
