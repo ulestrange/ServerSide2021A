@@ -6,7 +6,7 @@ const port = 3000
 
 const cookieParser = require('cookie-parser');
 
-app.use(cookieParser());
+app.use(cookieParser("una is great!!"));
 
 // set up handlebars view engine
 var handlebars = require('express-handlebars')
@@ -34,13 +34,13 @@ app.get('/',  (req, res) => {
 
     var message = "";
      
-    if (req.cookies.tracking){
-        var dateLastVisit = req.cookies.tracking;
-        var message = "Welcome back, you last visited on :" + dateLastVisit;
+    if (req.signedCookies.tracking){
+        var dateLastVisit = req.signedCookies.tracking;
+        var message = "Welcome back, you last visited on : " + dateLastVisit;
     }
 
     var currentDate = new Date();
-    res.cookie('tracking',currentDate.toDateString());
+    res.cookie('tracking',currentDate.toDateString(), {signed : true});
 
     res.render('home', {'message': message});
 });
