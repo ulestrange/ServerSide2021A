@@ -2,7 +2,11 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-// now in github
+// set up cookie handling middleware
+
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
 
 // set up handlebars view engine
 var handlebars = require('express-handlebars')
@@ -26,12 +30,21 @@ app.use(express.static('public'));
 //     res.send('Covid Holiday Tours');
 // });
 
-app.get('/', function (req, res) {
-    res.render('home');
+app.get('/',  (req, res) => {
+
+    var message = "";
+     
+    if (req.cookies.tracking){
+        var message = "Welcome back";
+    }
+
+    res.cookie ('tracking', true);
+    res.render('home', {'message': message});
 });
 
 
 app.get('/about',  (req, res) => {
+
     
     res.render('about');
 });
