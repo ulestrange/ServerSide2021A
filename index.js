@@ -35,10 +35,13 @@ app.get('/',  (req, res) => {
     var message = "";
      
     if (req.cookies.tracking){
-        var message = "Welcome back";
+        var dateLastVisit = req.cookies.tracking;
+        var message = "Welcome back, you last visited on :" + dateLastVisit;
     }
 
-    res.cookie ('tracking', true);
+    var currentDate = new Date();
+    res.cookie('tracking',currentDate.toDateString());
+
     res.render('home', {'message': message});
 });
 
