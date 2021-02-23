@@ -2,7 +2,11 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-// now in github
+// set up cookie handling middleware
+
+const cookieParser = require('cookie-parser');
+
+app.use(cookieParser("una is great!!"));
 
 
 
@@ -34,12 +38,25 @@ console.table(testData.getPeopleData());
 //     res.send('Covid Holiday Tours');
 // });
 
-app.get('/', function (req, res) {
-    res.render('home');
+app.get('/',  (req, res) => {
+
+    var message = "";
+     
+    if (req.signedCookies.tracking){
+        var dateLastVisit = req.signedCookies.tracking;
+        var message = "Welcome back, you last visited on : " + dateLastVisit;
+    }
+
+    var currentDate = new Date();
+    res.cookie('tracking',currentDate.toDateString(), {signed : true});
+
+    res.render('home', {'message': message});
 });
 
 
+
 app.get('/about', (req, res) => {
+
 
     res.render('about');
 });
