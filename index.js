@@ -8,9 +8,11 @@ const cookieParser = require('cookie-parser');
 
 app.use(cookieParser("una is great!!"));
 
+
+
 // set up handlebars view engine
 var handlebars = require('express-handlebars')
-.create({ defaultLayout:'main' });
+    .create({ defaultLayout: 'main' });
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
@@ -18,6 +20,12 @@ app.set('view engine', 'handlebars');
 // static files can be served from the public folder
 
 app.use(express.static('public'));
+
+// import the data we need
+
+const testData = require('./lib/data.js');
+
+console.table(testData.getPeopleData());
 
 
 
@@ -46,13 +54,14 @@ app.get('/',  (req, res) => {
 });
 
 
-app.get('/about',  (req, res) => {
 
-    
+app.get('/about', (req, res) => {
+
+
     res.render('about');
 });
 
-app.get('/contact',  (req, res) => {
+app.get('/contact', (req, res) => {
     res.render('contact');
 });
 
@@ -60,15 +69,7 @@ app.get('/contact',  (req, res) => {
 // a file - this is just to show how templates work and how we can pass them 
 // data
 
-var data = {"foil" : { "name": "foil",
-         "dob": "01/01/1998",
-        "imageurl": "/images/foilimage1.png",
-        "hobbies": ["Jokes", "Gags", "Stand up"]},
-        "arms" :  { "name": "arms",
-        "dob": "03/05/1995",
-       "imageurl": "/images/armsimage1.png"},
-        "hog" : { "name": "hog",
-        "imageurl": "/images/hogimage1.png"} }
+
 
 // app.get('/foil', (req,res) =>
 //        res.render('person', {person: data.foil} ))
@@ -79,33 +80,40 @@ var data = {"foil" : { "name": "foil",
 // app.get('/hog', (req,res) =>
 //        res.render('person', {person: data.hog} ))
 
-app.get('/personlist', (req,res) =>
-    res.render('personlist', { personlist: data }))
+app.get('/personlist', (req, res) =>
+        res.render('personlist', { personlist: testData.getPeopleData() }))
 
 app.get('/personlist/:name', (req, res) => {
 
-var name = req.params.name;
+            var name = req.params.name;
+            var data = testData.getPeopleData();
 
-res.render('person', {person: data[name]})
-})
+            if (data[name] == null) {
+                res.render('404'); // could also have a special page for person not found
+            }
+            else {
+                res.render('person', { person: data[name] })
+            }
+
+
+        })
 
 
 
 
 // custom 404 page
-app.use( (req, res) => {
-    res.type('text/plain');
-    res.status(404);
-    res.send('404 - Not Found');
-});
+app.use((req, res) => {
+            
+            res.render('404');
+        });
 
-// custom 500 page
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.type('text/plain');
-    res.status(500);
-    res.send('500 - Server Error');
-});
+    // custom 500 page
+    app.use((err, req, res, next) => {
+        console.error(err.stack);
+        res.type('text/plain');
+        res.status(500);
+        res.send('500 - Server Error');
+    });
 
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+    app.listen(port, () => console.log(`Example app listening on port ${port}!`))
