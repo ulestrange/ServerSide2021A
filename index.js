@@ -2,11 +2,23 @@ const express = require('express')
 const app = express()
 const port =  process.env.port || 3000;
 
+
+// import all the routers
+
+const baseRouter = require('./routes/base');
+const staffRouter = require('./routes/staff');
+
+
 // set up cookie handling middleware
 
 const cookieParser = require('cookie-parser');
 
 app.use(cookieParser("una is great!!"));
+
+// middleware for parsing the body of a form need this before you can use req.body
+
+app.use(express.urlencoded({ extended: true })) 
+
 
 
 
@@ -21,82 +33,16 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static('public'));
 
-// import the data we need
-
-const testData = require('./lib/data.js');
-
-console.table(testData.getPeopleData());
 
 
+app.use ('/', baseRouter);
 
-// Note the first route that gets matched is the one which will handle the request.
-
-// app.get('/', (req, res) => res.send('Hello World from Una hurrah for a new semester!'))
-
-// app.get('/',  (req, res) => {
-//     res.type('text/plain');
-//     res.send('Covid Holiday Tours');
-// });
-
-app.get('/',  (req, res) => {
-
-    var message = "";
-     
-    if (req.signedCookies.tracking){
-        var dateLastVisit = req.signedCookies.tracking;
-        var message = "Welcome back, you last visited on : " + dateLastVisit;
-    }
-
-    var currentDate = new Date();
-    res.cookie('tracking',currentDate.toDateString(), {signed : true});
-
-    res.render('home', {'message': message});
-});
+app.use('/staff', staffRouter)
 
 
 
-app.get('/about', (req, res) => {
 
 
-    res.render('about');
-});
-
-app.get('/contact', (req, res) => {
-    res.render('contact');
-});
-
-// just for now our data is here, we would normally get it from a database or
-// a file - this is just to show how templates work and how we can pass them 
-// data
-
-
-
-// app.get('/foil', (req,res) =>
-//        res.render('person', {person: data.foil} ))
-
-// app.get('/arms', (req,res) =>
-//        res.render('person', {person: data.arms} ))
-
-// app.get('/hog', (req,res) =>
-//        res.render('person', {person: data.hog} ))
-
-app.get('/personlist', (req, res) =>
-        res.render('personlist', { personlist: testData.getPeopleData() }))
-
-app.get('/personlist/:name', (req, res) => {
-
-            var name = req.params.name;
-            var data = testData.getPeopleData();
-
-            if (data[name] == null) {
-                res.render('404'); // could also have a special page for person not found
-            }
-            else {
-                res.render('person', { person: data[name] })
-            }
-
-
-        })
 
 
 
