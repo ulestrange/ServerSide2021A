@@ -15,6 +15,11 @@ const cookieParser = require('cookie-parser');
 
 app.use(cookieParser("una is great!!"));
 
+// middleware for parsing the body of a form need this before you can use req.body
+
+app.use(express.urlencoded({ extended: true })) 
+
+
 
 
 // set up handlebars view engine
