@@ -47,6 +47,13 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 
 
+// import our own Middleware
+
+const {flashMiddleware} = require('./lib/middleware.js');
+app.use(flashMiddleware);
+
+
+// settting up our own routes
 
 app.use ('/', baseRouter);
 
