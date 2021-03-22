@@ -19,6 +19,19 @@ app.use(cookieParser("una is great!!"));
 
 app.use(express.urlencoded({ extended: true })) 
 
+// set up session handling middleware: note this uses cookies so that needs to be set
+// up too.
+
+session = require('express-session');
+
+
+app.use(session(
+    {secret: "una is great!!", 
+    cookie: { maxage: 6000},
+    resave: false,
+    saveUninitialized: false
+  }))
+
 
 
 
@@ -34,6 +47,13 @@ app.set('view engine', 'handlebars');
 app.use(express.static('public'));
 
 
+// import our own Middleware
+
+const {flashMiddleware} = require('./lib/middleware.js');
+app.use(flashMiddleware);
+
+
+// settting up our own routes
 
 app.use ('/', baseRouter);
 

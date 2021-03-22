@@ -11,17 +11,21 @@ router.get('/', (req, res) =>
 
 
 router.get('/addnew', (req, res) => {
-    let fname = req.query.firstname;
-    let sname = req.query.surname;
-    console.log('Data entered ' + fname + ' ' + sname);
 
-
-    res.render('personform', { name1: fname, name2: sname })
+    res.render('personform')
 }
 )
 
-router.get('/personadded', (req, res) =>
-    res.render('personadded'))
+router.get('/personadded', (req, res) => {
+
+    if (req.session.staffdata) {
+        var newName = req.session.staffdata.name;
+    }
+    else {
+        var newName = "";
+    }
+    res.render('personadded', { name: newName })
+})
 
 // router.post('/addnew', (req, res) => {
 //      let fname = req.body.firstname;
@@ -31,10 +35,25 @@ router.get('/personadded', (req, res) =>
 
 // })
 
+// This implments POST/REDIRECT/GET it uses
+// a session to take data from this page to the personadded page.
+
+// router.post('/addnew', (req, res) => {
+//     console.log("Data received froma  post");
+//     console.table(req.body);
+//     req.session.staffdata = { name: req.body.firstname + " " + req.body.surname }
+//     res.redirect(303, '/staff/personadded',)
+// })
+
+// This implements POST/REDIRECT/GET
+//this time is uses a flash message
+
 router.post('/addnew', (req, res) => {
-    console.log("Data send via post");
+    console.log("Data received from a  post");
     console.table(req.body);
-    res.redirect(303, '/staff/personadded',)
+    req.session.flash = 
+    { type: 'success', intro: 'Data Saved:', message:  "Data for <strong>" + req.body.firstname + " " + req.body.surname + "</strong> has been added"}
+    res.redirect(303, '/staff')
 })
 
 
