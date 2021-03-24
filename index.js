@@ -49,10 +49,10 @@ app.use(express.static('public'));
 
 // import our own Middleware
 
-const {flashMiddleware, newsMiddleware} = require('./lib/middleware.js');
+const {flashMiddleware, newsMiddleware, testMiddleware} = require('./lib/middleware.js');
 app.use(flashMiddleware);
 app.use(newsMiddleware);
-
+app.use(testMiddleware);
 
 
 // settting up our own routes
