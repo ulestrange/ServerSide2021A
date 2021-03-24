@@ -19,19 +19,17 @@ router.get('/', (req, res) => {
 
 
 router.get('/about', (req, res) => {
-
-
     res.render('about', {
         tags: "about, background", linkData:
             [
-                { url: "itsligo.ie", text: '<strong> IT Sligo Web</strong>' },
-                { url: "www.irishtimes.ie", text: 'The Irish Times' }
+                { url: "http:itsligo.ie", text: '<strong> IT Sligo Web</strong>' },
+                { url: "http://www.irishtimes.ie", text: 'The Irish Times' }
             ]
     })
 });
 
-    router.get('/contact', (req, res) => {
-        res.render('contact', { tags: "dancing, singing, rain", data: testData.getSampleData() });
-    });
+router.get('/contact', (req, res) => {
+    res.render('contact', { tags: "dancing, singing, rain", data: testData.getSampleData() });
+});
 
-    module.exports = router;
+module.exports = router;
