@@ -3,8 +3,41 @@
 
 <h3> Demo of playing with Context</h3>
 
-{{#each data}}
+{{!-- <ol>
+    {{#each data}}
 
-{{@key}}  {{@key.value}}
+    <li>
+        <strong> {{@key}} :</strong>
+        <ol>
+            {{#each this}}
+            <li>
+                {{this}}
+            </li>
+            {{else}}
+            {{this}}
+            {{/each}}
+        </ol>
+    </li>
+    {{/each}}
+</ol> --}}
 
-{{/each}}
+<table>
+    <tr>
+        <th>Property</th>
+        <th>Value</th>
+
+    <tr>
+        {{#each data}}
+    <tr>
+        <td>{{@key}}</td>
+        {{#each this}}
+        {{this}} <br>
+        {{else}}
+        {{this}}
+        {{/each}}
+        <td>{{this}}</td>
+    </tr>
+    {{/each}}
+
+
+</table>
