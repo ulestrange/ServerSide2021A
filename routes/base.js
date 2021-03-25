@@ -29,7 +29,7 @@ router.get('/about', (req, res) => {
 });
 
 router.get('/contact', (req, res) => {
-    res.render('contact', { tags: "dancing, singing, rain", data: testData.getSampleData() });
+    res.render('contact', {  data: testData.getSampleData() });
 });
 
 module.exports = router;
