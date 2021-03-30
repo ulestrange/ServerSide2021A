@@ -3,6 +3,9 @@ const app = express()
 const port =  process.env.PORT|| 3000;
 
 
+// the database
+
+require('./lib/db');
 // import all the routers
 
 const baseRouter = require('./routes/base');
