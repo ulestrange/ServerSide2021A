@@ -7,7 +7,8 @@ const testData = require('../lib/db.js');
 
 router.get('/', async (req, res) => {
     const data = await testData.getPeopleData();
-    console.log(data);
+
+    console.table(data);
 
 
     res.render('personlist', { personlist: data })
@@ -59,8 +60,9 @@ router.get('/personadded', (req, res) => {
 router.post('/addnew', (req, res) => {
     console.log("Data received from a  post");
     console.table(req.body);
+    testData.createStaff(req.body);
     req.session.flash =
-        { type: 'success', intro: 'Data Saved:', message: "Data for <strong>" + req.body.firstname + " " + req.body.surname + "</strong> has been added" }
+        { type: 'success', intro: 'Data Saved:', message: "Data for <strong>" + req.body.name + "</strong> has been added" }
     res.redirect(303, '/staff')
 })
 
@@ -71,7 +73,9 @@ router.get('/:name', async (req, res) => {
 
     var name = req.params.name;
     var data = await testData.getPeopleData({name: name});
-    console.table(data);
+
+// data is an array which contains all the staff whose name matches.
+// there should only be one and we will take the
 
     if (!data[0]) {
         res.render('404'); // could also have a special page for person not found
@@ -79,10 +83,38 @@ router.get('/:name', async (req, res) => {
     else {
         res.render('person', { person: data[0] })
     }
-
-
 })
 
+router.get('/:name/edit', async (req, res) => {
+    var name = req.params.name;
+    var data = await testData.getPeopleData({name: name});
 
+    res.render('personeditform', {person: data[0]})
+})
+
+router.get('/:name/delete', async(req, res) =>{
+    var name = req.params.name;
+  try {
+    await testData.deleteStaff(name);
+    req.session.flash =
+        { type: 'success', intro: 'Data Removed:', message: "<strong>" + name+ "</strong> has been removed" }
+    res.redirect('/staff')
+  } catch {
+    req.session.flash =
+    { type: 'danger', intro: 'Data not Removed:', message: "<strong>" + name+ "</strong> has not been removed" }
+res.redirect('/staff')
+   
+    }
+  });
+
+
+router.post('/:name', async (req, res) => {
+    console.log("Data received from a Edit post");
+    console.table(req.body);
+    testData.createStaff(req.body);
+    req.session.flash =
+        { type: 'success', intro: 'Data Edited:', message: "Data for <strong>" + req.body.name + "</strong> has been edited" }
+    res.redirect(303, '/staff')
+})
 
 module.exports = router;
