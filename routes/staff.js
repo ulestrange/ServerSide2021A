@@ -6,7 +6,7 @@ const router = express.Router();
 const testData = require('../lib/db.js');
 
 router.get('/', async (req, res) => {
-    const data = await testData.getPeopleData();
+    const data = await testData.readStaff();
 
     console.table(data);
 
@@ -83,7 +83,7 @@ router.post('/addnew', (req, res) => {
 router.get('/:name', async (req, res) => {
 
     var name = req.params.name;
-    var data = await testData.getPeopleData({ name: name });
+    var data = await testData.readStaff({ name: name });
 
     // data is an array which contains all the staff whose name matches.
     // there should only be one and we will take the
@@ -98,7 +98,7 @@ router.get('/:name', async (req, res) => {
 
 router.get('/:name/edit', async (req, res) => {
     var name = req.params.name;
-    var data = await testData.getPeopleData({ name: name });
+    var data = await testData.readStaff({ name: name });
 
     res.render('personeditform', { person: data[0] })
 })
