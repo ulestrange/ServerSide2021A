@@ -8,13 +8,8 @@ const testData = require('../lib/db.js');
 router.get('/', async (req, res) => {
     const data = await testData.readStaff();
 
-    console.table(data);
-
-
     res.render('personlist', { personlist: data })
-}
-
-);
+});
 
 
 
@@ -60,6 +55,11 @@ router.get('/personadded', (req, res) => {
 router.post('/addnew', (req, res) => {
     console.log("Data received from a  post");
     console.table(req.body);
+
+    // note: this is not safe code. Any inputs from a user should be validated and sanitised before
+    // being saved to the database.
+
+
     testData.createStaff(req.body)
         .then(() => {
             req.session.flash =
