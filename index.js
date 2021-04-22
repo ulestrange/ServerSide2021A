@@ -3,6 +3,9 @@ const app = express()
 const port =  process.env.PORT|| 3000;
 
 
+// the database
+
+require('./lib/db');
 // import all the routers
 
 const baseRouter = require('./routes/base');
@@ -50,7 +53,7 @@ app.use(express.static('public'));
 // import our own Middleware
 
 const {flashMiddleware, newsMiddleware, testMiddleware} = require('./lib/middleware.js');
-//app.use(flashMiddleware);
+app.use(flashMiddleware);
 //app.use(testMiddleware);
 
 
